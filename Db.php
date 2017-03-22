@@ -26,9 +26,33 @@ Class Db{
      }
 
      public function execute($sql, $params=[]){
+         $fields_string = '';
+         $values_string= '';
+
+         $values =[];
+
+         if(!empty($params))
+         {
+             foreach($params as $field => $value)
+             {
+                 $fields_string .=  "`". $field . "`, ";
+                 $values_string .= ':' . $field . ', ';
+                 array_push($values,$value );
+
+             }
+         }
+
+
+         $sql .= "(" . substr($fields_string, 0, -2) . ") VALUES  (" . substr($values_string, 0, -2). ")";
+
          $sth = $this->dbh->prepare($sql);
-         $res = $sth->execute($params);
+         var_dump($sth);
+         var_dump($sql);
+
+
+         $res = $sth->execute($values);
 
          return $res;
+
      }
 }

@@ -2,7 +2,7 @@
 
 abstract class Model
 {
-      const TABLE = null;
+    protected  const TABLE = null;
     public $id;
     public static function findAll()
     {
@@ -22,25 +22,12 @@ abstract class Model
     }
 
 
-    public static function add ($data = [])
+    public static function add($data = [])
     {
         $db = new Db;
-        $set = '';
-        if(!empty($data))
-        {
-            foreach($data as $field)
-            {
-                $set .= "`". $field . "`" . "=:$field, ";
-            }
-             $set = substr($set, 0, -2);
-        }
+        $sql = 'INSERT INTO ' . static::TABLE ;
 
-        $sql = 'INSERT INTO ' . static::TABLE . ' SET ' . $set;
-
-        var_dump($sql);
-
-
-        return $db->query($sql);
+        return $db->execute($sql, $data );
     }
 
 
