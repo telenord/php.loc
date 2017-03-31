@@ -11,7 +11,7 @@
 
 <?php
 
-include __DIR__ . '\Article.php';
+include __DIR__ . '\article.php';
 
 ?>
 </body>

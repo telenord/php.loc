@@ -7,7 +7,6 @@ class Article
 {
     protected const TABLE = 'articles';
 
-
     public $title;
     public $lead;
 }
