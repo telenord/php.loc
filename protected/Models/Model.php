@@ -18,21 +18,22 @@ abstract class Model
     public static function findById(int $id)
     {
         $db = new \Db();
-        $sql = 'SELECT * FROM ' . static::TABLE . ' WHERE id=?';
-        $res = $db->queryOne($sql, static::class, $id);
+        $sql = 'SELECT * FROM ' . static::TABLE . ' WHERE id=:id';
+        $res = $db->query($sql, static::class, [':id' => $id]);
 
-        return empty($res) ? false : $res;
+        return empty($res) ? false : $res[0];
 
     }
 
     public static function findByLimit(int $limit)
     {
         $db = new \Db();
-        $sql = 'SELECT * FROM ' . static::TABLE . '  ORDER BY id DESC LIMIT ?';
+        $sql = 'SELECT * FROM ' . static::TABLE . '  ORDER BY id DESC LIMIT :limit';
 
-        $res = $db->query($sql, static::class, [$limit]);
 
-        return empty($res) ? false : $res;
+        $res = $db->queryLimit($sql, static::class,  $limit );
+
+        return $res;
 
     }
 
@@ -71,12 +72,10 @@ abstract class Model
 
     public function update()
     {
-
         $fields = get_object_vars($this);
-
         $columns = [];
-
         $data    = [];
+
         foreach ($fields as $name => $value) {
             if ('id' == $name) {
                 $data[':' . $name] =   $value;
@@ -84,37 +83,32 @@ abstract class Model
             }
 
             $columns[] = $name . ' = :' . $name;
-
             $data[':' . $name] = $value;
         }
 
-
-        $sql = 'UPDATE ' . static::TABLE . ' SET  (' . implode(', ',$columns) . ') WHERE id = :id';
+        $sql = 'UPDATE ' . static::TABLE . ' SET  ' . implode(', ',$columns) . ' WHERE id = :id';
 
         $db = new \Db();
-        var_dump($sql);
 
-        return $db->update($sql, $data);
+        return $db->execute($sql, $data);
 
     }
 
 
     public function save()
     {
-
         if ( is_int($this->id )) {
               $this->update();
         } else {
             $this->insert();
         }
-
     }
 
-    public function delete()
+    public static function delete(int $id)
     {
         $db = new \Db();
         $sql = 'DELETE FROM ' . static::TABLE . ' WHERE id=:id';
-        return  $db->execute($sql, [$this->id]);
+        return  $db->execute($sql, [':id' => $id]);
 
     }
 

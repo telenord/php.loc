@@ -13,5 +13,5 @@ if( null !==($_GET['id'])) {
 } else {
     $news = \Models\Article::findByLimit(3);
 
-    include __DIR__ . "/template/all_articles.html";
+    include __DIR__ . "/template/index.html";
 }

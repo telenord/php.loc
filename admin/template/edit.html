@@ -1,0 +1,9 @@
+<form action="../index.php" method="post">
+    <input type="text" name="author" placeholder="Автор" value="<?php echo $article->author; ?>"><br>
+    <input type="text" name="title"  placeholder="Заголовок" value="<?php echo $article->title; ?>"><br>
+    <input type="text" name="lead"  placeholder="Текст" value="<?php echo $article->lead; ?>"><br>
+
+
+    <input type="submit" name="save"  value="Сохранить">
+    <input type="reset" name="save"  value="Очистить">
+</form>

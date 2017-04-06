@@ -17,34 +17,33 @@ Class Db{
     {
         $sth = $this->dbh->prepare($sql);
 
-        if(!empty($values)){
-            for ($i = 0; $i < count($values); $i++){
-             $sth->bindValue($i+1, (int) $values[$i], PDO::FETCH_NUM );
-            }
-        }
-        $res = $sth->execute();
+        $res = $sth->execute($values);
+
         if ($res) {
-            $data = $sth->fetchAll(PDO::FETCH_CLASS , $class );
-            return $data;
-        } else {
-                return false;
+            return $sth->fetchAll(PDO::FETCH_CLASS , $class );
+
         }
+           return $res;
+
     }
 
-    public function queryOne(string $sql, string $class, int $values)
+    public function queryLimit(string $sql, string $class, int $values)
     {
         $sth = $this->dbh->prepare($sql);
-        $sth->bindValue( 1, $values );
+
+
+        $sth->bindParam(':limit', $values, PDO::PARAM_INT);
 
         $res = $sth->execute();
 
+
         if ($res) {
-            $sth->setFetchMode(PDO::FETCH_CLASS, $class);
-            $data = $sth->fetch();
-            return $data;
-        } else {
-            return false;
+
+            return $sth->fetchAll(PDO::FETCH_CLASS , $class );
+
         }
+         return $res;
+
     }
 
 
@@ -53,14 +52,7 @@ Class Db{
 
          $sth = $this->dbh->prepare($sql);
 
-//         foreach ($params as $key => $value){
-//             $sth->bindValue( $key, $value );
-//             var_dump( $sth);
-//         }
-
-         $res = $sth->execute($params);
-
-         return $res;
+         return $sth->execute($params);
      }
 
     public function insert(string $sql, array $params=[]){
@@ -78,20 +70,6 @@ Class Db{
         return $res;
     }
 
-    public function update(string $sql, array $params=[]){
-
-        $sth = $this->dbh->prepare($sql);
-
-        $res = $sth->execute($params);
-
-        if(true === $res){
-
-            return $this-> dbh->lastInsertId();
-
-        }
-
-        return $res;
-    }
 
 
 }

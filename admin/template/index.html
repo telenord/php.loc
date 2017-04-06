@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Новости</h1>
+<ul>
+    <?php foreach($news as $article):?>
+
+    <li> <?php echo $article->title ?>
+        <a href='/admin/index.php/?action=edit&id=<?php echo $article->id; ?>'>Редактировать</a>
+        <a href='/admin/index.php?action=del&id=<?php echo $article->id; ?>'>Удалить</a>
+    </li>
+    <?php endforeach;?>
+</ul>
+
+<a href='/admin/index.php?action=new'>Добавить новость</a>
+
+</body>
+</html>
