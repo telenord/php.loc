@@ -1,4 +1,4 @@
-<form action="../index.php" method="post">
+<form action="../index.php?action=save&id=<?php echo $article->id; ?>" method="post">
     <input type="text" name="author" placeholder="Автор" value="<?php echo $article->author; ?>"><br>
     <input type="text" name="title"  placeholder="Заголовок" value="<?php echo $article->title; ?>"><br>
     <input type="text" name="lead"  placeholder="Текст" value="<?php echo $article->lead; ?>"><br>

@@ -9,11 +9,11 @@ abstract class Model
     public $id;
 
     public static function findAll()
-{
-    $db = new \Db();
-    $sql = 'SELECT * FROM ' . static::TABLE;
-    return $db->query($sql, static::class);
-}
+    {
+        $db = new \Db();
+        $sql = 'SELECT * FROM ' . static::TABLE;
+        return $db->query($sql, static::class);
+    }
 
     public static function findById(int $id)
     {
@@ -30,7 +30,6 @@ abstract class Model
         $db = new \Db();
         $sql = 'SELECT * FROM ' . static::TABLE . '  ORDER BY id DESC LIMIT :limit';
 
-
         $res = $db->queryLimit($sql, static::class,  $limit );
 
         return $res;
@@ -39,8 +38,6 @@ abstract class Model
 
     public function insert()
     {
-        // @todo: изучить! var_dump(get_object_vars($this));
-
         $fields = get_object_vars($this);
 
         $columns = [];
@@ -54,10 +51,10 @@ abstract class Model
             $params[]  = ':' . $name;
             $data[':' . $name] = $value;
         }
-        $sql = 'INSERT INTO ' . static::TABLE . ' (' . implode(', ',$columns) . ') 
-            VALUES (' . implode(', ',$params) . ')';
+        $sql = 'INSERT INTO ' . static::TABLE . '(' . implode(', ',$columns) . ') VALUES (' . implode(', ',$params) . ')';
 
         $db = new \Db();
+
         $res = $db->insert($sql, $data);
 
         if(false !== $res){
@@ -97,7 +94,8 @@ abstract class Model
 
     public function save()
     {
-        if ( is_int($this->id )) {
+
+        if ( is_int((int)($this->id ))) {
               $this->update();
         } else {
             $this->insert();
@@ -111,6 +109,5 @@ abstract class Model
         return  $db->execute($sql, [':id' => $id]);
 
     }
-
 
 }

@@ -9,23 +9,16 @@ class Config
 
     protected static $instance = null;
 
-    protected function __construct($data=[])
-{
- $this-> data = $data;
-}
 
 
+    protected function __construct(){
+        $this->data = include __DIR__ . '\connection.php';
+    }
 
     public static function instance() {
-        $data =[
-            'dbname'=>'test',
-            'host' => 'localhost',
-            'login' => 'root',
-            'pass' => ''
-        ];
 
         if(null === self::$instance){
-            self::$instance = new self($data);
+            self::$instance = new self();
         }
         return self::$instance;
     }

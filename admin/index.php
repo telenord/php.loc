@@ -3,7 +3,7 @@ require __DIR__ . '\..\protected\autoload.php';
 
 
 if(isset($_POST['save'])){
-    $article = new \Models\Article();
+    $article =  \Models\Article::findById((int)$_GET['id']);
 
     $article->lead = htmlspecialchars( $_POST['lead'] );
     $article->author = htmlspecialchars( $_POST['author'] );
@@ -12,6 +12,7 @@ if(isset($_POST['save'])){
     $article ->save();
 
     unset($_POST);
+    header('location: \admin\index.php');
 }
 
 
@@ -22,19 +23,17 @@ if( isset($_GET['action'])){
     {
         $article = \Models\Article::delete( (int) $_GET['id']);
         unset($_GET);
-        header('location: /admin/index.php');
+        header('location: \admin\index.php');
     }
 
-    if($_GET['action']=='new')
-    {
+    if($_GET['action']=='new'){
         include __DIR__ . '\template\new.html';
     }
 
-    if($_GET['action']=='edit')
-    {
+    if($_GET['action']=='edit'){
 
         $article = \Models\Article::findById( (int) $_GET['id']);
-        unset($_GET);
+
         include __DIR__ . '\template\edit.html';
 
     }

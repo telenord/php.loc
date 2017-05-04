@@ -2,14 +2,15 @@
 
 require __DIR__ . '\..\App\Config.php';
 
-Class Db{
+Class Db
+{
     protected $dbh;
 
     public function __construct( )
     {
         $config = \App\Config::instance();
 
-        $this->dbh = new PDO('mysql:host=' . $config->data['host'] . '; dbname='. $config->data['dbname'] , $config->data['login'], $config->data['pass']);
+        $this->dbh = new PDO('mysql:host=' . $config->data['db']['host'] . '; dbname='. $config->data['db']['dbname'] , $config->data['db']['login'], $config->data['db']['pass']);
 
     }
 
@@ -19,12 +20,12 @@ Class Db{
 
         $res = $sth->execute($values);
 
-        if ($res) {
+        if ($res){
             return $sth->fetchAll(PDO::FETCH_CLASS , $class );
 
         }
-           return $res;
 
+        return $res;
     }
 
     public function queryLimit(string $sql, string $class, int $values)
@@ -46,16 +47,16 @@ Class Db{
 
     }
 
-
-
-     public function execute(string $sql, array $params=[]){
+     public function execute(string $sql, array $params=[])
+     {
 
          $sth = $this->dbh->prepare($sql);
 
          return $sth->execute($params);
      }
 
-    public function insert(string $sql, array $params=[]){
+    public function insert(string $sql, array $params=[])
+    {
 
         $sth = $this->dbh->prepare($sql);
 
@@ -69,7 +70,4 @@ Class Db{
 
         return $res;
     }
-
-
-
 }
